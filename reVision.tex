@@ -6,7 +6,8 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage[dvipsnames]{xcolor}
-\usepackage{svg}
+\usepackage{smartdiagram}
+\usesmartdiagramlibrary{additions}
 \graphicspath{ {images/} }
 \pagenumbering{arabic}
 \newcolumntype{Y}{>{\centering\arraybackslash}X}
@@ -68,7 +69,7 @@
 
 \newpage
 
-\begin{section}{Project Management}
+\begin{section}{The Work Plan}
   \begin{subsection}{Overall Strategy}
     \paragraph{}{reVision's iterative development process consists of project management and planning, requirement analysis,
     implementation and testing. Each iteration results in a more optimized version of each implementation.}\\ \\
@@ -512,64 +513,95 @@
 \begin{landscape}
 \begin{subsection}{Pert Diagram}
   \newline
-  \vspace{1cm}
+  \vspace{5cm}
   \newline
-  \begin{figure}
-  \centering
-  \includegraphics{asd}
-  \caption{svg image}
-\end{figure}
+  \begin{center}
+    \tikzset{
+      every shadow/.style={
+        fill=none,
+        shadow xshift=0pt,
+        shadow yshift=0pt}
+    }
+   \smartdiagramset{
+     border color=black,
+     back arrow disabled=true,
+     arrow line width=1pt,
+     uniform color list=white for 5 items,
+     uniform arrow color=true,
+     arrow color=black,
+     font=\medium,
+     text width=2.5cm,
+     module minimum width=2.5cm,
+     module minimum height=1.5cm,
+     arrow tip=stealth,
+     module x sep=3.75,
+     back arrow distance=0.75,
+     additions={
+     additional item offset=0.85cm,
+     additional item border color=black,
+     additional item fill color=white,
+     additional item width=2.5cm,
+     additional connections disabled=true,
+     additional arrow color=black,
+     additional arrow tip=stealth,
+     additional arrow line width=1pt,
+     additional arrow style=[-stealth’
+     }
+   }
+  \smartdiagramadd[flow diagram:horizontal]{%
+  Search of Similar Research,Domain and Data Model,Renderscript Implementation,Sample Apps,Result%
+  }{%
+  below of module1/Research and Requirement Analysis, below of module3/Java Implementation,
+  above of module3/OpenCV Implementation, below of module4/Testing%
+  }
+  \smartdiagramconnect{{]-latex’}}{additional-module1/module2}
+  \smartdiagramconnect{{]-latex’}}{additional-module2/module4}
+  \smartdiagramconnect{{]-latex’}}{additional-module3/module4}
+  \smartdiagramconnect{{]-latex’}}{additional-module4/module4}
+  \end{center}
 \end{subsection}
 \end{landscape}
 \newpage
 \begin{subsection}{Risk Management}
   \paragraph{}{%
-  The development team is unexperienced on computer vision field, so some learning
-  period is required in multiple phases of the project. Especially developing modules that contain algorithms
-  having steep learning curve will take remarkable time in the process. For this reason it is crucial to comply with
-  the schedule.\\
+  The development team was unexperienced on computer vision field, so some learning
+  period was required in multiple phases of the project. Especially digesting Harris Corner Detection Algorithm
+  and implementing Renderscript and OpenCV versions of it were formidable.
+  For this reason it was crucial to comply with the schedule.\\
   }
 \end{subsection}
 \end{section}
 
 \newpage
 
-\begin{section}{Methodology and Analysis}
-  \begin{subsection}{Feasibility Study}
-    \paragraph{}{reVision is an open source and non-profit project so there is no need to examine the financial feasibility. The project is analyzed only in operational and technical sides.}
-    \begin{subsubsection}{Operational Feasibility}
-      \paragraph{}{Computer vision developers feel the lack of a decent computer vision library on Android platform. Creating a high performance computer vision application on Android takes too much effort. This project, if succeeds will become a ready-to-use and collaborative tool for Android developers.}
-    \end{subsubsection}
-
-    \begin{subsubsection}{Technical Feasibility}
-      \paragraph{}{Widely used libraries for computer vision and GPU computing such as OpenCV, OpenCL, and CUDA, cannot be used on Android platform because of incompatibilities of devices and lack of drivers. For this reason a new GPU computing engine named Renderscript was presented. But Renderscript does not have a complete computer vision library.}
-      \paragraph{}{reVision uses Renderscript for data-parallel GPU computations. Since Renderscript technology is hardware and version independent among all recent Android devices, reVision can also be used universally on every Android device. The runtime frame-rates vary between different devices but reVision is ensured to work at the most efficient way that the device is capable of.}
-    \end{subsubsection}
-  \end{subsection}
-  \newpage
+\begin{section}{Analysis and Design}
   \begin{subsection}{The Process Model and Its Particular Adaptation}
-    \paragraph{}{According to R. S. Pressman \cite{pressman} there are several process model types including linear sequential model, prototype model, evolutionary models and etc. In real life most them are used according to the project necessities and requirements.}
-\paragraph{}{reVision is being developed using incremental model which is an evolutionary model. Every release is published after a work cycle which includes all the phases of the software development process. Each release extends the project with at least one module or functionality with its sample application.}
-\paragraph{}{Incremental model is suitable for this project because the project team is not experienced in computer vision field. The incremental model gives the option of refactoring the design and evolving the project through time to the team, which other models would not give.}
-\paragraph{}{Development cycle can simply be clarified with following steps; Requirement analysis, Planning, Design, Implementation and Testing. Every development iteration of reVision include each one of those steps.}
+    \paragraph{}{According to R. S. Pressman \cite{pressman} there are several process model types including linear sequential model, prototype model, evolutionary models and etc.
+    In real life most them are used according to the project necessities and requirements.}
+    \paragraph{}{reVision is being developed using incremental model which is an evolutionary model.
+    Every release is published after a work cycle which includes all the phases of the software development process.
+    Each release extends the project with at least one implementation with its sample application.}
+    \paragraph{}{Incremental model is suitable for this project because the project team is not experienced in
+    computer vision field. The incremental model gives the option of refactoring the design and evolving the project
+    through time to the team, which other models would not give.}
+    \paragraph{}{Development cycle can simply be clarified with following steps; Requirement analysis, Planning, Design,
+    Implementation and Testing. Every development iteration of reVision include each one of those steps.}
   \end{subsection}
   \newpage
   \begin{subsection}{Functional and Non-Functional Requirements}
     \begin{subsubsection}{Functional Requirements}
-      \paragraph{Filtering:}{
-      Image filtering is required for other modules to provide initial data. It also can be used as standalone to get filtered image.
+      \paragraph{Corner Detection:}{
+        Each implementation detects corners on the video input.
       }
-      \paragraph{Feature Detection:}{
-      Feature detection is one of the outputs of the library which provides marked image matrix of the detected features such as edges, corners, blobs.
+      \paragraph{Performance Measurement:}{
+        Sample applications calculate the performance in terms of frame per second(FPS).
       }
-      \paragraph{Object Tracking:}{
-      Object tracking is one of the features of the library which detects the object and tracks the object in the given stream.
-      }
+
       \newline
       \vspace{1cm}
       \newline
       \lstset{language=C++,
-                      caption={Harris Kernel from the first prototype},
+                      caption={Corner Response Kernel},
                       captionpos=b,
                       backgroundcolor=\color{black!5},
                       keywordstyle=\color{new-blue},
@@ -580,34 +612,59 @@
       }
       {\ttfamily
       \begin{lstlisting}
-        uchar4 __attribute__((kernel)) harris(const uchar4 in,
-          uint32_t x, uint32_t y)
-        {
-            float c = 0.04;
-            float4 convXpixel =
-              rsUnpackColor8888(rsGetElementAt_uchar4(convX, x, y));
-            float4 convYpixel =
-              rsUnpackColor8888(rsGetElementAt_uchar4(convY, x, y));
+        float __attribute__((kernel)) cornerResponse(const float in,
+                                                     uint32_t x,
+                                                     uint32_t y) {
+            float Ixx = rsGetElementAt_float(allIxx, x, y);
+            float Iyy = rsGetElementAt_float(allIyy, x, y);
+            float Ixy = rsGetElementAt_float(allIxy, x, y);
 
-            float Ix = convXpixel.r * gMonoMult[0] + convXpixel.g *
-              gMonoMult[1] + convXpixel.b * gMonoMult[2];
-            float Iy = convYpixel.r * gMonoMult[0] + convYpixel.g *
-              gMonoMult[1] + convYpixel.b * gMonoMult[2];
-
-            float Ixx = Ix * Ix;
-            float Iyy = Iy * Iy;
-            float Ixy = Ix * Iy;
             float cornerResponse =
-              (Ixx*Iyy - Ixy*Ixy - c*(Ixx+Iyy)*(Ixx+Iyy));
-
-            if(cornerResponse < harrisThreshold ) {
-                cornerColorRGB.r = 0;
-                cornerColorRGB.g = 255;
-                cornerColorRGB.b = 0;
-                return cornerColorRGB;
+                (Ixx * Iyy - Ixy * Ixy -
+                c * (Ixx + Iyy) * (Ixx + Iyy));
+            if(cornerResponse < -harrisThreshold ||
+               cornerResponse > harrisThreshold) {
+                rsSetElementAt_float(covImg, cornerResponse, x, y);
             } else {
-                return in;
+                rsSetElementAt_float(covImg, 0, x, y);
             }
+            return in;
+        }
+      \end{lstlisting}
+      }
+
+      \lstset{language=C++,
+                      caption={Non-maximal Suppression Kernel},
+                      captionpos=b,
+                      backgroundcolor=\color{black!5},
+                      keywordstyle=\color{new-blue},
+                      stringstyle=\color{red},
+                      commentstyle=\color{green},
+                      basicstyle=\footnotesize,% basic font setting
+                      morecomment=[l][\color{magenta}]{\#}
+      }
+      {\ttfamily
+      \begin{lstlisting}
+        float __attribute__((kernel)) nonMaxSuppression(const float in,
+                                                        uint32_t x,
+                                                        uint32_t y) {
+            float tmp = rsGetElementAt_float(covImg, x, y);
+            for(ky = -1*nonMaxRadius;
+                tmp != 0 && ky <= nonMaxRadius;
+                ky++) {
+                    for(kx = -1*nonMaxRadius;
+                        kx <= nonMaxRadius;
+                        kx++) {
+                            if(rsGetElementAt_float(covImg,
+                                                    x + kx,
+                                                    y + ky) > tmp) {
+                                tmp = 0;
+                                break;
+                            }
+                    }
+            }
+            rsSetElementAt_float(covImg, tmp, x, y);
+            return in;
         }
       \end{lstlisting}
       }
@@ -615,23 +672,17 @@
     \newpage
     \begin{subsubsection}{Non-Functional Requirements}
       \paragraph{Performance Requirements:}{
-      The response time problem were the thing that triggered the creation of reVision project. Without reasonable
-      performance, reVision could not be considered successful. To achieve the desired performance, developers implement
-      and use all performance related modules such as implementing Async Model or using Renderscript framework. The
-      performance is the single most important non-functional requirement of reVision.
+        The response time of commonly used solutions were the thing that triggered the creation of reVision project.
+        Without reasonable performance, reVision could not be considered successful.
+        The performance is the single most important non-functional requirement of reVision.
       }
       ​
       \paragraph{Reliability Requirements:}{
-      The responses of reVision modules must be correct and precise.
-      }
-      ​
-      \paragraph{Usability Requirements:}{ The function arguments and the Android communication modules must be easy
-       to understand and to use. Since it is a library, every function has to be well documented. Also the sample
-       applications have to be complete and ready to test for users.
+        The responses of reVision implementations must be correct and precise.
       }
     \end{subsubsection}
   \end{subsection}
-  \newpage
+
   \begin{subsection}{Use Cases}
     reVision is an experimental project to provide analysis results of Computer Vision implementations of different technologies.
     It is not intended to be used by end users. Therefore there is no use case to share.
@@ -639,51 +690,60 @@
   \end{subsection}
 \end{section}
 \newpage
-\begin{section}{Planned Solution/Product}
-  \paragraph{}{
-  reVision is planned to be an open source computer vision library that can operate on all Android devices.
-  By using the power of Renderscript, it will provide ready to use computer vision algorithm implementations
-  with their sample applications.
-  }
-  \paragraph{}{
-  Computer vision algorithms will be implemented in Renderscript. When the Renderscript was presented, the goal of
-  it had been to bring a higher performance API to Android developers \cite{renderscript_release}.
-  So, the goal of reVision is to present a higher level, closer to Renderscript performance, and easy-to-use
-  API to Android developers.
-  }
-  \paragraph{}{
-  Sample applications are planned to exemplify all features of the library in order to guide the developers on
-  their developing process. Figure 1 indicates a couple of pictures from first prototype of reVision. Image on the
-  bottom is a Harris Algortihm applied form of the top.
+\begin{section}{Solution/Product \& Results}
 
+  \paragraph{}{
+    reVision is planned to compare Renderscript with OpenCV and Java which are commonly used technologies for Computer
+    Vision. Renderscript is a framework developed by Google to make computationally intensive tasks at high performance
+    on Android. However, it is not used by the most of Android developers. reVision strives to create a knowledge base
+    for developers to help which technology to use. It is an analysis report that makes comparison on different
+    Android devices with different resolutions.
   }
+
   \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.25]{clean.png}
-    \includegraphics[scale=0.25]{detected.png}
+    \includegraphics[scale=0.60]{graph.png}
 
-    \caption{First prototype of reVision: Implementation of Harris Corner Detection}
+    \caption{Performance of different devices}
     \label{fig:mesh1}
   \end{figure}
 
-
   \paragraph{}{
-  Eventually, reVision will be a solution to absence of an easy-to-use, and well performanced library operates on
-  all Android devices.
+    Harris Corner Detection Algorithm is implemented with Renderscript, OpenCV and Java. OpenCV is chosen for being
+    the most common library in this field. It is reasonable to compare Renderscript with it. And Java is the main
+    language of Android framework.
   }
+  \newpage
 
+\paragraph{}{
+
+  \begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.25]{renderscript.png}
+    \caption{Renderscript Demo}
+    \label{fig:mesh2}
+  \end{figure}
+
+  \begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.25]{opencv.png}
+    \caption{OpenCV Demo}
+    \label{fig:mesh3}
+  \end{figure}
+
+  \begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.25]{java.png}
+    \caption{Java Demo}
+    \label{fig:mesh4}
+  \end{figure}
+}
 \end{section}
+\vfill
 \newpage
 \begin{section}{Related Work/Similar Solutions}
 \paragraph{}{
-  There are several libraries about the vision. One of the most significant of them is OpenCV.
-}
-
-  \paragraph{}{
-  \begin{wrapfigure}{l}{0.25\textwidth}
-    \centering
-    \includegraphics[width=0.25\textwidth]{opencv.png}
-\end{wrapfigure}
+There are several libraries about the vision. One of the most significant of them is OpenCV.
 
 OpenCV is released under a BSD license and hence it’s free for
 both academic and commercial use. It has C++, C, Python and Java interfaces and supports Windows, Linux, Mac OS,
@@ -693,14 +753,9 @@ take advantage of the hardware acceleration of the underlying heterogeneous comp
 the world, OpenCV has more than 47 thousand people of user community and estimated number of downloads exceeding 9
 million. Usage ranges from interactive art, to mines inspection, stitching maps on the web or through advanced
 robotics \cite{opencv}.
-
-  }
+}
 
   \paragraph{}{
-  \begin{wrapfigure}{r}{0.25\textwidth}
-    \centering
-    \includegraphics[width=0.25\textwidth]{fastcv.jpg}
-\end{wrapfigure}
 Another computer vision library is the Qualcomm's FastCV\textsuperscript{TM} \cite{fastcv}. FastCV\textsuperscript{TM} library offers a
 mobile-optimized computer vision (CV) library which includes the most frequently used vision processing functions
 for use across a wide array of mobile devices, even mass-market handsets. Middleware developers can use FastCV to
